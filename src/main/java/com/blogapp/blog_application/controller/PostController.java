@@ -74,7 +74,11 @@ public class PostController {
         User user=userService.findUserById(1);
         post.setUser(user);
         post.setPublished(true);
-        post.setExcerpt(post.getContent().substring(0,200));
+
+        String content = post.getContent();
+        int excerptLength = Math.min(content.length(), 200);
+        post.setExcerpt(content.substring(0, excerptLength));
+
         Post postSaved=postService.savePost(post,tagString);
 
         return "redirect:/post/"+postSaved.getId();
