@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${post.title}">Post Details</title>
+    <style>
+        body {
+            max-width: 700px;
+            margin: 30px auto;
+            font-family: Arial, sans-serif;
+            line-height: 1.5;
+            color: #333;
+            padding: 0 15px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .meta {
+            text-align: center;
+            font-size: 0.9em;
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        .content {
+            margin-bottom: 30px;
+        }
+
+        a, button {
+            display: inline-block;
+            padding: 6px 12px;
+            margin: 5px 5px 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f8f8f8;
+            color: #333;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .comments h2 {
+            margin-top: 40px;
+            margin-bottom: 10px;
+        }
+
+        .comment {
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .comment strong {
+            display: block;
+        }
+
+        .comment small {
+            color: #aaa;
+            font-size: 0.8em;
+        }
+
+        .comment-form input,
+        .comment-form textarea {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+    </style>
+</head>
+<body>
+
+<h1 th:text="${post.title}">Post Title</h1>
+<p class="meta">
+    <strong th:text="${post.user.name}">Author</strong> |
+    <span th:text="${#temporals.format(post.createdAt, 'dd MMM yyyy')}">Date</span>
+</p>
+
+<div class="content" th:text="${post.content}">
+    Post content goes here...
+</div>
+
+<div class="actions">
+    <a th:href="@{/update/{id}(id=${post.id})}">Update</a>
+    <a th:href="@{/delete/{id}(id=${post.id})}">Delete</a>
+</div>
+
+<div class="comments">
+
+    <h2>Comments</h2>
+
+    <div th:each="comment : ${comments}" class="comment">
+        <strong th:text="${comment.name}">Commenter</strong>
+        <small th:text="${#temporals.format(comment.createdAt, 'dd MMM yyyy HH:mm')}">Date</small>
+        <p th:text="${comment.comment}">Comment text...</p>
+        <div class="comment-actions">
+            <a th:href="@{/comment/edit/{id}(id=${comment.id})}">Edit</a>
+            <a th:href="@{/comment/delete/{id}(id=${comment.id})}">Delete</a>
+        </div>
+    </div>
+
+    <form th:action="@{/post/{id}/comment(id=${post.id})}" method="post" th:object="${commentObj}" class="comment-form">
+        <input type="text" th:field="*{name}" placeholder="Your name" required>
+        <input type="email" th:field="*{email}" placeholder="Your email" required>
+        <textarea th:field="*{comment}" rows="3" placeholder="Write a comment..." required></textarea>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+</body>
+</html>

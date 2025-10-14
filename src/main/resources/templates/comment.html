@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${commentObj.id} != null ? 'Edit Comment' : 'Add Comment'">Comment Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+        }
+
+        h2 {
+            margin-bottom: 1rem;
+        }
+
+        form {
+            padding: 15px;
+            border: 1px solid #000;
+            border-radius: 4px;
+            max-width: 400px;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #000;
+            border-radius: 2px;
+            box-sizing: border-box;
+            font-size: 0.95rem;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 8px 14px;
+            border: 1px solid #000;
+            border-radius: 2px;
+            background: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .cancel-link {
+            margin-left: 10px;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Edit Form</h2>
+
+<form th:action="@{/comment/save}" th:object="${commentObj}" method="post">
+
+    <input type="hidden" th:field="*{id}" />
+    <input type="hidden" th:field="*{post.id}" />
+
+    <label for="name">Name:</label>
+    <input type="text" id="name" th:field="*{name}" placeholder="Your name" required>
+
+    <label for="comment">Comment:</label>
+    <textarea id="comment" th:field="*{comment}" rows="4" placeholder="Write your comment..." required></textarea>
+
+    <button type="submit">Save</button>
+    <a class="cancel-link" th:href="@{/}">Cancel</a>
+</form>
+
+</body>
+</html>
