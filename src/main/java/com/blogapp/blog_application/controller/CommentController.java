@@ -37,7 +37,7 @@ public class CommentController {
     }
 
     @GetMapping("/comment/edit/{id}")
-    public String editComment(@PathVariable("id") int id, Model model){
+    public String editCommentById(@PathVariable("id") int id, Model model){
         Comment comment= commentService.getCommentById(id);
         if(comment!=null){
             model.addAttribute("commentObj",comment);
@@ -47,13 +47,15 @@ public class CommentController {
 
     @PostMapping("/comment/save")
     public String saveComment(@ModelAttribute("commentObj") Comment comment){
+        int postId=comment.getPost().getId();
         commentService.saveComment(comment);
-        return "redirect:/";
+        return "redirect:/post/"+postId;
     }
 
     @GetMapping("/comment/delete/{id}")
-    public String deleteComment(@PathVariable int id){
+    public String deleteCommentById(@PathVariable int id){
+        int postId=commentService.getCommentById(id).getPost().getId();
         commentService.deleteCommentById(id);
-        return "redirect:/";
+        return "redirect:/post/"+postId;
     }
 }
