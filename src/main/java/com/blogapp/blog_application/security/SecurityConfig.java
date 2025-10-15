@@ -21,6 +21,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.authorizeHttpRequests(configuer->
                 configuer
+                        .requestMatchers("/comment/edit/{id}","/comment/delete/{id}").hasRole("AUTHOR")
+                        .requestMatchers("/newpost","/update/{id}","/delete/{id}").hasAnyRole("AUTHOR","ADMIN")
                         .requestMatchers("/login","/register","/","/post/{id}","/post/{id}/comment","/comment/save").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form ->

@@ -2,7 +2,6 @@ package com.blogapp.blog_application.controller;
 
 import com.blogapp.blog_application.entity.Comment;
 import com.blogapp.blog_application.entity.Post;
-import com.blogapp.blog_application.repository.PostRepository;
 import com.blogapp.blog_application.service.CommentService;
 import com.blogapp.blog_application.service.PostService;
 import org.springframework.stereotype.Controller;
@@ -14,12 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class CommentController {
-    private final PostRepository postRepository;
     private final PostService postService;
     private final CommentService commentService;
 
-    public CommentController(PostRepository postRepository, PostService postService, CommentService commentService) {
-        this.postRepository = postRepository;
+    public CommentController(PostService postService, CommentService commentService) {
         this.postService = postService;
         this.commentService = commentService;
     }
@@ -29,9 +26,7 @@ public class CommentController {
         Post post=postService.getPostById(id);
         comment.setId(0);
         comment.setPost(post);
-
-        post.getComments().add(comment);
-        postRepository.save(post);
+        commentService.saveComment(comment);
 
         return "redirect:/post/"+id;
     }

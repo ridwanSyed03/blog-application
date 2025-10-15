@@ -26,6 +26,17 @@ public class Tag {
     @ManyToMany(mappedBy = "tags")
     private List<Post> posts=new ArrayList<>();
 
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
     public Tag() {}
 
     public Tag(String name) {
