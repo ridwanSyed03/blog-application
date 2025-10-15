@@ -26,7 +26,13 @@ public class PostServiceImpl implements PostService{
     }
 
     public Page<Post> searchFilterAndSortPosts(String keyword, String sortField, String order, List<Integer> authorIds, List<Integer> tagIds, int page, int size) {
-        Sort.Direction direction = "desc".equalsIgnoreCase(order) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Sort.Direction direction;
+        if ("desc".equalsIgnoreCase(order)) {
+            direction = Sort.Direction.DESC;
+        } else {
+            direction = Sort.Direction.ASC;
+        }
+
         Sort sort = Sort.by(direction, sortField != null ? sortField : "publishedAt");
         Pageable pageable = PageRequest.of(page, size, sort);
 

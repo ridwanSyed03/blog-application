@@ -22,7 +22,7 @@ public class Comment {
     private String comment;
 
     @ManyToOne
-    @JoinColumn(name = "author")
+    @JoinColumn(name = "post_id")
     private Post post;
 
     @Column(name="created_at")
