@@ -8,24 +8,20 @@
             font-family: Arial, sans-serif;
             margin: 2rem;
         }
-
         h2 {
             margin-bottom: 1rem;
         }
-
         form {
             padding: 15px;
             border: 1px solid #000;
             border-radius: 4px;
             max-width: 400px;
         }
-
         label {
             display: block;
             margin-top: 10px;
             font-weight: bold;
         }
-
         input, textarea {
             width: 100%;
             padding: 8px;
@@ -35,7 +31,6 @@
             box-sizing: border-box;
             font-size: 0.95rem;
         }
-
         button {
             margin-top: 15px;
             padding: 8px 14px;
@@ -45,7 +40,6 @@
             cursor: pointer;
             font-size: 0.95rem;
         }
-
         .cancel-link {
             margin-left: 10px;
             text-decoration: none;
@@ -54,7 +48,6 @@
     </style>
 </head>
 <body>
-
 <h2>Edit Form</h2>
 
 <form th:action="@{/comment/save}" th:object="${commentObj}" method="post">

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Posts</title>
     <style>
@@ -106,6 +106,19 @@
         <button type="submit">Sort</button>
     </form>
 
+    <div class="auth-actions">
+        <div sec:authorize="isAuthenticated()">
+            <form th:action="@{/logout}" method="post" style="display:inline;">
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+
+        <div sec:authorize="isAnonymous()">
+            <a th:href="@{/login}">Login</a>
+        </div>
+    </div>
+
+
     <form th:action="@{/}" method="get">
         <div class="filter-row">
             <input type="hidden" name="search" th:value="${keyword}" />
@@ -152,19 +165,16 @@
     </div>
     <div class="pagination" style="text-align:center; margin:20px 0;">
 
-        <!-- Previous Page -->
         <form th:if="${currentPage > 0}" th:action="@{/}" method="get" style="display:inline;">
             <input type="hidden" name="page" th:value="${currentPage - 1}" />
             <input type="hidden" name="search" th:value="${keyword}" />
             <input type="hidden" name="sortField" value="publishedAt" />
             <input type="hidden" name="order" th:value="${order}" />
 
-            <!-- preserve selected authors -->
             <input type="hidden" name="authorId"
                    th:each="authorId : ${selectedAuthorIds}"
                    th:value="${authorId}" />
 
-            <!-- preserve selected tags -->
             <input type="hidden" name="tagId"
                    th:each="tagId : ${selectedTagIds}"
                    th:value="${tagId}" />
@@ -172,25 +182,21 @@
             <button type="submit">Previous</button>
         </form>
 
-        <!-- Page Info -->
         <span style="margin: 0 15px;">
         Page <span th:text="${currentPage + 1}"></span>
         of <span th:text="${totalPages}"></span>
     </span>
 
-        <!-- Next Page -->
         <form th:if="${currentPage + 1 < totalPages}" th:action="@{/}" method="get" style="display:inline;">
             <input type="hidden" name="page" th:value="${currentPage + 1}" />
             <input type="hidden" name="search" th:value="${keyword}" />
             <input type="hidden" name="sortField" value="publishedAt" />
             <input type="hidden" name="order" th:value="${order}" />
 
-            <!-- preserve selected authors -->
             <input type="hidden" name="authorId"
                    th:each="authorId : ${selectedAuthorIds}"
                    th:value="${authorId}" />
 
-            <!-- preserve selected tags -->
             <input type="hidden" name="tagId"
                    th:each="tagId : ${selectedTagIds}"
                    th:value="${tagId}" />
@@ -198,8 +204,6 @@
             <button type="submit">Next</button>
         </form>
     </div>
-
-
 </div>
 
 </body>

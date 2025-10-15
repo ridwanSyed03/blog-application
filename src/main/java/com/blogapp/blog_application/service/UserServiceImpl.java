@@ -2,6 +2,7 @@ package com.blogapp.blog_application.service;
 
 import com.blogapp.blog_application.entity.User;
 import com.blogapp.blog_application.repository.UserRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,7 +27,9 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void save(User user) {
-        user.setRole("ROLE_AUTHOR");
+        user.setRole("AUTHOR");
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        user.setPassword(encoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 }
