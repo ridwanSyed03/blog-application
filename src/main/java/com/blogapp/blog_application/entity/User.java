@@ -22,6 +22,9 @@ public class User {
     @Column(name="password")
     private String password;
 
+    @Column(name="role")
+    private String role;
+
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<Post> posts=new ArrayList<>();
 
@@ -53,6 +56,14 @@ public class User {
         return password;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -64,6 +75,7 @@ public class User {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
                 '}';
     }
 }
