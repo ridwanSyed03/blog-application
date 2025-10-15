@@ -23,4 +23,10 @@ public class UserServiceImpl implements UserService{
     public User findUserById(int id) {
         return userRepository.findById(id).get();
     }
+
+    @Override
+    public void save(User user) {
+        user.setRole("ROLE_AUTHOR");
+        userRepository.save(user);
+    }
 }
