@@ -4,6 +4,7 @@ import com.blogapp.blog_application.entity.Comment;
 import com.blogapp.blog_application.entity.Post;
 import com.blogapp.blog_application.service.CommentService;
 import com.blogapp.blog_application.service.PostService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +32,7 @@ public class CommentController {
         return "redirect:/post/"+id;
     }
 
+    @PreAuthorize("hasRole('ROLE_AUTHOR') and @securityCheck.isValidAuthor(authentication.name, #postId)")
     @GetMapping("/comment/edit/{id}")
     public String editCommentById(@PathVariable("id") int id, Model model){
         Comment comment= commentService.getCommentById(id);
@@ -47,6 +49,7 @@ public class CommentController {
         return "redirect:/post/"+postId;
     }
 
+    @PreAuthorize("hasRole('ROLE_AUTHOR') and @securityCheck.isValidAuthor(authentication.name, #postId)")
     @GetMapping("/comment/delete/{id}")
     public String deleteCommentById(@PathVariable int id){
         int postId=commentService.getCommentById(id).getPost().getId();

@@ -9,6 +9,7 @@ import com.blogapp.blog_application.service.TagService;
 import com.blogapp.blog_application.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -94,6 +95,7 @@ public class PostController {
         return "post";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') or (hasRole('ROLE_AUTHOR') and @securityCheck.isValidAuthor(authentication.name, #id))")
     @GetMapping("/update/{id}")
     public String updatePost(@PathVariable int id, Model model) {
         Post post=postService.getPostById(id);
@@ -106,6 +108,7 @@ public class PostController {
         return "create-post";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') or (hasRole('ROLE_AUTHOR') and @securityCheck.isValidAuthor(authentication.name, #id))")
     @GetMapping("/delete/{id}")
     public String deletePostById(@PathVariable int id){
         postService.deletePostById(id);
