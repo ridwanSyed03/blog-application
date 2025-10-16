@@ -31,10 +31,12 @@
 <body>
 <div class="container">
     <h2>Create account</h2>
+    <div th:if="${error}" class="error" th:text="${error}"></div>
     <form th:action="@{/register}" th:object="${user}" method="post">
         <input type="text" th:field="*{name}" placeholder="Name" />
         <input type="email" th:field="*{email}" placeholder="Email" />
         <input type="password" th:field="*{password}" placeholder="Password" />
+        <input type="password" name="confirmPassword" placeholder="Confirm Password" required />
         <button type="submit">Submit</button>
     </form>
     <div class="login-link">

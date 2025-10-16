@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -40,7 +41,7 @@ public class PostController {
             @RequestParam(defaultValue = "0") int page,
             Model model) {
 
-        int pageSize = 6;
+        int pageSize = 10;
 
         Page<Post> postPage = postService.searchFilterAndSortPosts(keyword, sortField, order, authorIds, tagIds, page, pageSize);
 
@@ -71,9 +72,13 @@ public class PostController {
     }
 
     @PostMapping("/newpost")
-    public String createOrUpdatePost(@ModelAttribute Post post, @RequestParam String tagString){
-        User user=userService.findUserById(1);
-        post.setUser(user);
+    public String createOrUpdatePost(@ModelAttribute Post post, @RequestParam String tagString, Principal principal){
+        String username=principal.getName();
+
+        if(username!=null){
+            User user=userService.findUserByUsername(username);
+            post.setUser(user);
+        }
         post.setPublished(true);
 
         String content = post.getContent();
@@ -86,8 +91,16 @@ public class PostController {
     }
 
     @GetMapping("/post/{id}")
-    public String getPost(@PathVariable int id, Model model){
+    public String getPost(@PathVariable int id, Model model, Principal principal){
         Post post=postService.getPostById(id);
+        Comment commentObj=new Comment();
+
+        if(principal!=null){
+            User loggedInUser=userService.findUserByUsername(principal.getName());
+            commentObj.setName(loggedInUser.getName());
+            commentObj.setEmail(loggedInUser.getEmail());
+        }
+
         model.addAttribute("post",post);
         model.addAttribute("user",post.getUser());
         model.addAttribute("comments",post.getComments());

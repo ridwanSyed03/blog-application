@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class UserController {
@@ -29,7 +30,12 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute("user") User user) {
+    public String registerUser(@ModelAttribute("user") User user, @RequestParam String confirmPassword, Model model) {
+        if(!user.getPassword().equals(confirmPassword)){
+            model.addAttribute("user",user);
+            model.addAttribute("error","password and confirm password not same");
+            return "register";
+        }
         userService.save(user);
         return "redirect:/login";
     }

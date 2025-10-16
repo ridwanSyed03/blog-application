@@ -94,8 +94,15 @@
     </div>
 
     <form th:action="@{/post/{id}/comment(id=${post.id})}" method="post" th:object="${commentObj}" class="comment-form">
-        <input type="text" th:field="*{name}" placeholder="Your name" required>
-        <input type="email" th:field="*{email}" placeholder="Your email" required>
+        <div th:if="${#authentication.principal.equals('anonymousUser')}">
+            <input type="text" th:field="*{name}" placeholder="Your name" required>
+            <input type="email" th:field="*{email}" placeholder="Your email" required>
+        </div>
+
+        <div th:if="${#authentication != null}">
+            <input type="hidden" th:field="*{name}">
+            <input type="hidden" th:field="*{email}">
+        </div>
         <textarea th:field="*{comment}" rows="3" placeholder="Write a comment..." required></textarea>
         <button type="submit">Submit</button>
     </form>
