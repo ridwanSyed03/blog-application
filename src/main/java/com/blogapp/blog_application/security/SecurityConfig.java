@@ -30,6 +30,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/api/blog/posts/**").hasAnyRole("AUTHOR", "ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/blog/posts/**").hasAnyRole("AUTHOR", "ADMIN")
 
+                        .requestMatchers(HttpMethod.POST, "/api/blog/posts/{id}/comment").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/blog/posts/comment/{id}").hasRole("AUTHOR")
+                        .requestMatchers(HttpMethod.PUT, "/api/blog/posts/comment/{id}").hasRole("AUTHOR")
+
                         .requestMatchers("/comment/edit/{id}","/comment/delete/{id}").hasRole("AUTHOR")
                         .requestMatchers("/newpost","/update/{id}","/delete/{id}").hasAnyRole("AUTHOR","ADMIN")
                         .requestMatchers("/login","/register","/","/post/{id}","/post/{id}/comment","/comment/save").permitAll()

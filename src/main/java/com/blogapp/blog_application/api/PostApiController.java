@@ -84,7 +84,7 @@ public class PostApiController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or (hasRole('ROLE_AUTHOR') and @securityCheck.isValidAuthor(authentication.name, #id))")
     @PatchMapping("/posts/{id}")
-    public Post partialUpdatePost(@PathVariable int id,@RequestBody Post updatedPost,@RequestParam(defaultValue = "") String tagString) {
+    public Post partialUpdatePost(@PathVariable int id,@RequestBody Post updatedPost,@RequestParam(defaultValue = "", required = false) String tagString) {
         Post existingPost = postService.getPostById(id);
 
         if(updatedPost.getTitle()!=null){
