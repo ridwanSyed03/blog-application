@@ -1,5 +1,6 @@
 package com.blogapp.blog_application.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class User {
     @Column(name="role")
     private String role;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<Post> posts=new ArrayList<>();
 

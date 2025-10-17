@@ -2,6 +2,7 @@ package com.blogapp.blog_application.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,6 +24,12 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.authorizeHttpRequests(configuer->
                 configuer
+                        .requestMatchers(HttpMethod.GET,"/api/blog/posts/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/blog/posts").hasAnyRole("AUTHOR", "ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/blog/posts/**").hasAnyRole("AUTHOR", "ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/api/blog/posts/**").hasAnyRole("AUTHOR", "ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/blog/posts/**").hasAnyRole("AUTHOR", "ADMIN")
+
                         .requestMatchers("/comment/edit/{id}","/comment/delete/{id}").hasRole("AUTHOR")
                         .requestMatchers("/newpost","/update/{id}","/delete/{id}").hasAnyRole("AUTHOR","ADMIN")
                         .requestMatchers("/login","/register","/","/post/{id}","/post/{id}/comment","/comment/save").permitAll()
@@ -35,6 +42,7 @@ public class SecurityConfig {
                                 .failureUrl("/login?error=true")
                                 .permitAll())
                 .csrf(AbstractHttpConfigurer::disable)
+                .httpBasic(httpBasic -> {})
                 .logout(logout->logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/")
